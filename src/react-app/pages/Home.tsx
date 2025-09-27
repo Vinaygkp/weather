@@ -3,23 +3,25 @@ import SearchBar from '@/react-app/components/SearchBar';
 import WeatherCard from '@/react-app/components/WeatherCard';
 import TimeCard from '@/react-app/components/TimeCard';
 import PlaceInfoCard from '@/react-app/components/PlaceInfoCard';
-// import { ErrorBoundary } from '@/react-app/components/ErrorBoundary';
 import { Globe, Sparkles } from 'lucide-react';
+import React, { useState } from "react";
+import NewsCard from "../components/NewsCard";
 
-export default function Home() {
+const Home: React.FC = () => {
   const { searchResult, isSearching, searchLocation } = useLocationSearch();
 
-  // Load Google Fonts
-  // useEffect(() => {
-  //   const link = document.createElement('link');
-  //   link.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap';
-  //   link.rel = 'stylesheet';
-  //   document.head.appendChild(link);
-  // }, []);
+  const [city, setCity] = useState("Tokyo"); // default city
+
+  const handleSearch = (query: string) => {
+    if (query.trim() !== "") {
+      setCity(query.trim());     // News ke liye
+      searchLocation(query);     // Weather/Time/Place ke liye
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-cyan-50">
-      {/* Animated background elements */}
+      {/* Animated background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
@@ -45,14 +47,13 @@ export default function Home() {
 
         {/* Search Section */}
         <section className="px-4 mb-12">
-          <SearchBar onSearch={searchLocation} isSearching={isSearching} />
+          <SearchBar onSearch={handleSearch} isSearching={isSearching} />
         </section>
 
         {/* Results Section */}
         {searchResult && (
           <section className="px-4 pb-12">
             <div className="max-w-6xl mx-auto">
-              {/* Location Header */}
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-gray-800 mb-2">
                   {searchResult.location.name}
@@ -76,33 +77,14 @@ export default function Home() {
                 </div>
               )}
 
-              {/* Map Section */}
-              {/* <div className="mb-8">
-                <MapView 
-                  location={searchResult.location}
-                  loading={searchResult.loading}
-                />
-              </div> */}
-
               {/* Results Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Weather Card */}
                 <div className="lg:col-span-1">
-                  <WeatherCard 
-                    weather={searchResult.weather} 
-                    loading={searchResult.loading}
-                  />
+                  <WeatherCard weather={searchResult.weather} loading={searchResult.loading} />
                 </div>
-
-                {/* Time Card */}
                 <div className="lg:col-span-1">
-                  <TimeCard 
-                    timeInfo={searchResult.timeInfo} 
-                    loading={searchResult.loading}
-                  />
+                  <TimeCard timeInfo={searchResult.timeInfo} loading={searchResult.loading} />
                 </div>
-
-                {/* Place Info Card */}
                 <div className="lg:col-span-1">
                   <PlaceInfoCard 
                     placeInfo={searchResult.placeInfo}
@@ -127,6 +109,11 @@ export default function Home() {
           </section>
         )}
 
+        {/* News Section */}
+        <section className="px-4 py-12 text-center">
+          <NewsCard city={city} />
+        </section>
+
         {/* Welcome Message */}
         {!searchResult && !isSearching && (
           <section className="px-4 text-center">
@@ -141,23 +128,6 @@ export default function Home() {
                   local time, and interesting facts. From bustling metropolises to remote villages, 
                   every place has a story to tell.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                  <div className="p-4">
-                    <div className="text-3xl mb-2">🌤️</div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Real-time Weather</h3>
-                    <p className="text-sm text-gray-600">Current conditions and forecasts</p>
-                  </div>
-                  <div className="p-4">
-                    <div className="text-3xl mb-2">🕒</div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Local Time</h3>
-                    <p className="text-sm text-gray-600">Timezone and current time</p>
-                  </div>
-                  <div className="p-4">
-                    <div className="text-3xl mb-2">📖</div>
-                    <h3 className="font-semibold text-gray-800 mb-1">Place Insights</h3>
-                    <p className="text-sm text-gray-600">Fascinating facts and information</p>
-                  </div>
-                </div>
               </div>
             </div>
           </section>
@@ -165,4 +135,6 @@ export default function Home() {
       </div>
     </div>
   );
-}
+};
+
+export default Home;
