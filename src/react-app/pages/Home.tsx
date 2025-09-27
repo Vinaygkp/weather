@@ -10,7 +10,7 @@ import NewsCard from "../components/NewsCard";
 const Home: React.FC = () => {
   const { searchResult, isSearching, searchLocation } = useLocationSearch();
 
-  const [city, setCity] = useState("Tokyo"); // default city
+  const [city, setCity] = useState(""); // default city
 
   // ✅ handleSearch ek hi jagah rahega
   const handleSearch = (query: string) => {
