@@ -12,10 +12,11 @@ const Home: React.FC = () => {
 
   const [city, setCity] = useState("Tokyo"); // default city
 
+  // ✅ handleSearch ek hi jagah rahega
   const handleSearch = (query: string) => {
     if (query.trim() !== "") {
-      setCity(query.trim());     // News ke liye
-      searchLocation(query);     // Weather/Time/Place ke liye
+      setCity(query.trim());      // update NewsCard
+      searchLocation(query);      // update Weather, Time, Place
     }
   };
 

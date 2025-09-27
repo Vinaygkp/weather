@@ -19,7 +19,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ city }) => {
     const fetchNews = async () => {
       setLoading(true);
       try {
-        const apiKey = "10c488335d294a2580e5be93f9af4537"; // 🔑 NewsAPI key
+        const apiKey = "10c488335d294a2580e5be93f9af4537"; // ✅ Your NewsAPI key
         const url = `https://newsapi.org/v2/everything?q=${city}&sortBy=publishedAt&language=en&pageSize=5&apiKey=${apiKey}`;
         const res = await fetch(url);
         const data = await res.json();
@@ -35,7 +35,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ city }) => {
 
   return (
     <div className="bg-gradient-to-r from-green-300 to-blue-500 text-white p-5 rounded-2xl shadow-lg w-full max-w-lg mx-auto mt-6">
-      <h2 className="text-xl font-semibold mb-3">📰 Latest News</h2>
+      <h2 className="text-xl font-semibold mb-3">📰 Latest News for {city}</h2>
 
       {loading ? (
         <p>Loading news...</p>
@@ -55,10 +55,11 @@ const NewsCard: React.FC<NewsCardProps> = ({ city }) => {
           ))}
         </ul>
       ) : (
-        <p>No news available.</p>
+        <p>No news available for {city}.</p>
       )}
     </div>
   );
 };
+
 
 export default NewsCard;
